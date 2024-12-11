@@ -32,8 +32,8 @@ public class MemberEventMessageMapper implements EventMessageMapper<MemberEvent,
 					new MemberRelationRequestAcceptedEvent(
 							MemberEventType.RELATION_REQUEST_ACCEPTED.getEventType(),
 							System.currentTimeMillis(),
-							Long.valueOf((String) messagePayload.getData().get("fromMemberId")),
-							Long.valueOf((String) messagePayload.getData().get("toMemberId"))));
+							Long.valueOf((String) messagePayload.getData().get("toMemberId")),
+							Long.valueOf((String) messagePayload.getData().get("fromMemberId"))));
 		}
 		return Optional.empty();
 	}
