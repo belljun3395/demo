@@ -43,14 +43,18 @@ public class MemberRepositoryImpl implements MemberRepository {
 						.findById(toMemberId)
 						.orElseThrow(() -> new IllegalArgumentException("Member not found"));
 
-		return new MemberRelation(
-				fromMemberId,
+		Relation relation =
 				new Relation(
 						type,
 						fromMemberId,
 						toMember.getId(),
 						toMember.getName(),
-						new Email(toMember.getEmail())));
+						new Email(toMember.getEmail()));
+
+		if (type.equals(MemberRelationType.REQUEST)) {
+			return MemberRelation.requestRelation(fromMemberId, relation);
+		}
+		return new MemberRelation(fromMemberId, relation);
 	}
 
 	@Override

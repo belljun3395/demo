@@ -32,14 +32,8 @@ public class MemberRelationService {
 	}
 
 	public MemberRelation acceptRequestRelation(MemberRelation requestedMemberRelation) {
-		MemberRelation acceptedRequestRelation = requestedMemberRelation.accept();
-
-		memberRepository.saveRelation(
-				acceptedRequestRelation.getRelation().getToMemberId(),
-				acceptedRequestRelation.getRelation().getFromMemberId(),
-				MemberRelationType.ACCEPTED);
-		memberRepository.updateRelation(acceptedRequestRelation);
-
-		return acceptedRequestRelation;
+		requestedMemberRelation.accept();
+		memberRepository.updateRelation(requestedMemberRelation);
+		return requestedMemberRelation;
 	}
 }
