@@ -1,5 +1,6 @@
 package com.example.member.repository;
 
+import com.example.event.Event;
 import com.example.member.model.Member;
 import com.example.member.model.MemberAccount;
 import com.example.member.model.MemberRelation;
@@ -77,6 +78,7 @@ public class MemberRepositoryImpl implements MemberRepository {
 
 	@Override
 	public MemberRelation updateRelation(MemberRelation modifiedMemberRelation) {
+		List<Event> events = modifiedMemberRelation.getEvents();
 		MemberRelationEntity origin =
 				memberRelationJpaRepository
 						.findTopByFromMemberIdAndToMemberId(
@@ -90,6 +92,7 @@ public class MemberRepositoryImpl implements MemberRepository {
 						modifiedMemberRelation.getRelation().getFromMemberId(),
 						modifiedMemberRelation.getRelation().getToMemberId(),
 						modifiedMemberRelation.getRelation().getRelationType().getId());
+		source.registerEvents(events);
 		MemberRelationEntity entity = memberRelationJpaRepository.save(source);
 
 		MemberEntity toMember =

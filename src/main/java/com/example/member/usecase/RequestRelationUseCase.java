@@ -1,12 +1,10 @@
 package com.example.member.usecase;
 
-import com.example.member.event.relation.MemberRelationEvent;
 import com.example.member.model.Member;
 import com.example.member.model.MemberRelation;
 import com.example.member.model.relation.Relation;
 import com.example.member.repository.MemberRepository;
 import com.example.member.service.MemberRelationService;
-import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -34,11 +32,6 @@ public class RequestRelationUseCase {
 
 		MemberRelation memberRelation = memberRelationService.requestRelation(member, toMember);
 		Relation relation = memberRelation.getRelation();
-
-		List<MemberRelationEvent> events = memberRelation.getEvents();
-		for (MemberRelationEvent event : events) {
-			applicationEventPublisher.publishEvent(event);
-		}
 
 		Map<String, String> out =
 				Map.of(
