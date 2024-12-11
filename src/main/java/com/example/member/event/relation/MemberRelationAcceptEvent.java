@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @EventDetails(outbox = true)
-public class MemberRelationAcceptEvent extends MemberRelationEvent {
+public class MemberRelationAcceptEvent extends MemberRelationDomainEvent {
 	private final Long fromMemberId;
 	private final Long toMemberId;
 

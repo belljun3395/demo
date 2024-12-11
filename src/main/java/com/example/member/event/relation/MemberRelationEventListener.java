@@ -7,6 +7,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
+import org.springframework.modulith.events.ApplicationModuleListener;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -20,8 +21,17 @@ public class MemberRelationEventListener
 	private final MemberMessageRelay messageRelay;
 	private final MemberEventMessageMapper eventMessageMapper;
 
-	@Override
+	@ApplicationModuleListener
+	public void onModuleEvent(MemberRelationDomainEvent event) {
+		onEvent(event);
+	}
+
 	@EventListener
+	public void onApplicationEvent(MemberRelationExternalEvent event) {
+		onEvent(event);
+	}
+
+	@Override
 	public void onEvent(MemberRelationEvent event) {
 		log.info("<<<<< Received event: {}, {}", event.getEventType(), event.getEventId());
 		if (event instanceof MemberRelationRequestAcceptedEvent requestAcceptedEvent) {
