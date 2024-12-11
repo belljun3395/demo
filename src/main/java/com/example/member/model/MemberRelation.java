@@ -1,5 +1,6 @@
 package com.example.member.model;
 
+import com.example.event.Event;
 import com.example.member.event.MemberEventType;
 import com.example.member.event.relation.MemberRelationAcceptEvent;
 import com.example.member.event.relation.MemberRelationEvent;
@@ -44,6 +45,10 @@ public class MemberRelation {
 
 	private Boolean isValidRelation(Long id, Relation relation) {
 		return Objects.equals(id, relation.getFromMemberId());
+	}
+
+	public List<Event> getEvents() {
+		return new ArrayList<>(events);
 	}
 
 	public void accept() {
