@@ -1,7 +1,6 @@
 package com.example.member.service;
 
 import com.example.member.model.Member;
-import com.example.member.model.MemberBlockRelations;
 import com.example.member.model.MemberRelation;
 import com.example.member.model.MemberRelationType;
 import com.example.member.repository.MemberRepository;
@@ -15,20 +14,17 @@ public class MemberRelationService {
 	private final MemberRepository memberRepository;
 
 	public MemberRelation requestRelation(Member fromMember, Member toMember) {
-		MemberBlockRelations memberRelations = getMemberBlockRelations(toMember);
-		boolean isBlockedMember = memberRelations.isBlockedMember(fromMember.getId());
-		if (isBlockedMember) {
+		List<MemberRelation> toMemberBlockedList =
+				memberRepository.findAllToRelations(toMember.getId(), MemberRelationType.BLOCKED);
+		boolean isFromMemberBlocked =
+				toMemberBlockedList.stream()
+						.anyMatch(member -> member.getRelation().getToMemberId().equals(fromMember.getId()));
+		if (isFromMemberBlocked) {
 			throw new IllegalArgumentException("Blocked member");
 		}
 
 		return memberRepository.saveRelation(
 				fromMember.getId(), toMember.getId(), MemberRelationType.REQUEST);
-	}
-
-	private MemberBlockRelations getMemberBlockRelations(Member member) {
-		List<MemberRelation> toRelationMembers =
-				memberRepository.findAllToRelations(member.getId(), MemberRelationType.BLOCKED);
-		return new MemberBlockRelations(member.getId(), toRelationMembers);
 	}
 
 	public MemberRelation acceptRequestRelation(MemberRelation requestedMemberRelation) {
